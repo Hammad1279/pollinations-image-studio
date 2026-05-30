@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Studio</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            text-align: center; 
+            padding: 40px 20px; 
+            background: #0f0f12; 
+            color: #ffffff; 
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #1a1a24;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        h1 { margin-top: 0; color: #a855f7; }
+        input { 
+            padding: 12px; 
+            width: 80%; 
+            border-radius: 6px; 
+            border: 1px solid #3f3f46; 
+            background: #27272a;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        input:focus { outline: 2px solid #a855f7; }
+        button { 
+            padding: 12px 24px; 
+            background: #a855f7; 
+            color: white; 
+            border: none; 
+            border-radius: 6px; 
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer; 
+            transition: background 0.2s;
+        }
+        button:hover { background: #9333ea; }
+        .result { margin-top: 25px; min-height: 200px; }
+        img { max-width: 100%; height: auto; border-radius: 8px; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .loading { display: none; color: #a855f7; font-weight: bold; margin-top: 15px; }
+        footer { margin-top: 40px; font-size: 14px; color: #71717a; }
+        a { color: #a855f7; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>AI Image Studio</h1>
+        <p>Type a detailed description below to generate an image.</p>
+        <input type="text" id="promptInput" placeholder="A futuristic city in the middle of a desert...">
+        <br>
+        <button onclick="generateImage()">Generate Artwork</button>
+
+        <div class="loading" id="loader">Generating your masterpiece...</div>
+        <div class="result">
+            <img id="outputImage" alt="AI Generated Output" onload="hideLoader()">
+        </div>
+    </div>
+
+    <footer>
+        <p>Powered by <a href="https://pollinations.ai" target="_blank">Pollinations.ai</a></p>
+    </footer>
+
+    <script>
+        function generateImage() {
+            const prompt = document.getElementById('promptInput').value.trim();
+            if(!prompt) {
+                alert('Please enter a description first!');
+                return;
+            }
+            
+            const loader = document.getElementById('loader');
+            const imgTag = document.getElementById('outputImage');
+            
+            loader.style.display = 'block';
+            imgTag.style.display = 'none';
+            
+            const encodedPrompt = encodeURIComponent(prompt);
+            // Constructing the public clean text URL direct path
+            const imageUrl = `https://image.pollinations.ai/p/${encodedPrompt}?width=1024&height=1024&nologo=true`;
+            
+            imgTag.src = imageUrl;
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('outputImage').style.display = 'inline-block';
+        }
+    </script>
+</body>
+</html>
